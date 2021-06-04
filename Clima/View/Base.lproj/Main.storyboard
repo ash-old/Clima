@@ -84,8 +84,8 @@
                                         </subviews>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Glasgow" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h5l-13-xRx">
-                                        <rect key="frame" x="251.5" y="312.5" width="122.5" height="36"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                        <rect key="frame" x="255" y="312.5" width="119" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="30"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -109,6 +109,11 @@
                             <constraint firstItem="kG4-RL-6s1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="yj5-YT-qBe"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="cityLabel" destination="h5l-13-xRx" id="M2j-nc-uCn"/>
+                        <outlet property="conditionImageView" destination="I8F-oz-4rk" id="YTJ-fE-DDL"/>
+                        <outlet property="temperatureLabel" destination="rME-C1-uSt" id="5Mt-NP-tFX"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
