@@ -25,6 +25,7 @@ class ViewController: UIViewController {
   }
 }
 
+//MARK: - UITextFieldDelegate
 
 extension ViewController: UITextFieldDelegate {
   
@@ -56,6 +57,8 @@ extension ViewController: UITextFieldDelegate {
     searchTextField.text = ""
   }
 }
+
+//MARK: - WeatherManagerDelegate
 
 extension ViewController: WeatherManagerDelegate {
   
