@@ -7,32 +7,40 @@
 
 import Foundation
 
+protocol WeatherManagerDelegate {
+  func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel)
+  func didFailWithError(error: Error)
+}
 
 struct WeatherManager {
   let weatherURL = "https://api.openweathermap.org/data/2.5/weather?&units=metric&appid=71606a5dd0bece3cf6198a09448d2592"
   
+  var delegate: WeatherManagerDelegate?
+  
   func fetchWeather(cityName: String) {
     let urlString = "\(weatherURL)&q=\(cityName)"
     print(urlString)
-    performRequest(urlString: urlString)
+    performRequest(with: urlString)
   }
   
-  func performRequest(urlString: String) {
-    //1. create URL session
+  func performRequest(with urlString: String) {
+    //1. create a URL
     if let url = URL(string: urlString) {
       
-      //2. create URLSession
+      //2. create a URLSession
       let session = URLSession(configuration: .default)
       
       //3. give the session a task
       let task = session.dataTask(with: url) { (data, response, error) in
         if error != nil {
-          print(error!)
+          delegate?.didFailWithError(error: error!)
           return
         }
         
         if let safeData = data {
-          parseJSON(weatherData: safeData)
+          if let weather = parseJSON(safeData) {
+            delegate?.didUpdateWeather(self, weather: weather)
+          }
         }
       }
       
@@ -41,7 +49,7 @@ struct WeatherManager {
     }
   }
   
-  func parseJSON(weatherData: Data) {
+  func parseJSON(_ weatherData: Data) -> WeatherModel? {
     let decoder = JSONDecoder()
     do {
     let decodedData = try decoder.decode(WeatherData.self, from: weatherData)
@@ -52,11 +60,11 @@ struct WeatherManager {
       let name = decodedData.name
       
       let weatherModel = WeatherModel(conditionId: id, cityName: name, temperature: temp)
+      return weatherModel
       
-      print(weatherModel.conditionName)
-      print(weatherModel.temperatureString)
     } catch {
-      print(error)
+      delegate?.didFailWithError(error: error)
+      return nil
     }
   }
   

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class ViewController: UIViewController, UITextFieldDelegate, WeatherManagerDelegate {
 
  
   @IBOutlet weak var conditionImageView: UIImageView!
@@ -21,6 +21,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     super.viewDidLoad()
     //textField should report back to ViewController
     searchTextField.delegate = self
+    weatherManager.delegate = self
   }
 
   @IBAction func searchPressed(_ sender: UIButton) {
@@ -49,6 +50,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
       weatherManager.fetchWeather(cityName: city)
     }
     searchTextField.text = ""
+  }
+  
+  func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
+    print(weather.temperature)
+  }
+  
+  func didFailWithError(error: Error) {
+    print(error)
   }
   
 }
