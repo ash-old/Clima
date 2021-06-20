@@ -6,24 +6,34 @@
 //
 
 import UIKit
+import CoreLocation
+
 
 class ViewController: UIViewController {
-
- 
+  
   @IBOutlet weak var conditionImageView: UIImageView!
   @IBOutlet weak var temperatureLabel: UILabel!
   @IBOutlet weak var cityLabel: UILabel!
   @IBOutlet weak var searchTextField: UITextField!
   
   var weatherManager = WeatherManager()
+  let locationManager = CLLocationManager()
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    // ask user for permission to use location
+    locationManager.delegate = self
+    locationManager.requestWhenInUseAuthorization()
+    locationManager.requestLocation()
     //textField should report back to ViewController
     searchTextField.delegate = self
     weatherManager.delegate = self
   }
+  
 }
+
+
+
 
 //MARK: - UITextFieldDelegate
 
@@ -72,6 +82,27 @@ extension ViewController: WeatherManagerDelegate {
   
   func didFailWithError(error: Error) {
     print(error)
+  }
+}
+
+//MARK: - CLLocationManagerDelegate
+
+extension ViewController: CLLocationManagerDelegate {
+  
+  @IBAction func locationPressed(_ sender: UIButton) {
+  }
+  
+  func locationManager(_ locationManager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    if let location = locations.last {
+      print("Found user's location: \(location)")
+      let lat = location.coordinate.latitude
+      let lon = location.coordinate.longitude
+      weatherManager.fetchWeather(latitude: lat, longitude: lon)
+    }
+  }
+  
+  func locationManager(_ locationManager: CLLocationManager, didFailWithError error: Error) {
+    print("Failed to find user's location: \(error.localizedDescription)")
   }
 }
 
