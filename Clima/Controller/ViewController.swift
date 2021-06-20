@@ -90,6 +90,7 @@ extension ViewController: WeatherManagerDelegate {
 extension ViewController: CLLocationManagerDelegate {
   
   @IBAction func locationPressed(_ sender: UIButton) {
+    locationManager.requestLocation()
   }
   
   func locationManager(_ locationManager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
